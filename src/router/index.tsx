@@ -1,4 +1,4 @@
-import type { RouteObject } from "react-router";
+import type { RouteObject } from "react-router-dom";
 import { LazyLoadMethod } from "@/utils/RouterUtlis";
 
 const index: RouteObject[] = [
