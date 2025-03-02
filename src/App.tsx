@@ -2,7 +2,7 @@
  * @Author: fuwens
  * @LastEditors: fuwens@163.com
  * @Date: 2025-02-21 10:40:27
- * @Description: 介绍文件的作用、文件的入参、出参。
+ * @Description: APP。
  */
 import React from "react";
 
