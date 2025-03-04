@@ -57,7 +57,7 @@ const ChaPanel = () => {
     <div className="w-full h-full flex flex-col overflow-hidden relative">
       <Bubble.List
         roles={roles}
-        className="py-10"
+        className="py-10 flex-1 overflow-y-auto"
         items={messages.map(({ id, message, status }) => ({
           key: id,
           loading: status === "loading",

@@ -61,7 +61,7 @@ const CommonHeader: React.FC = () => {
         onClose={onClose}
         open={open}
         key={"placement"}
-        width={250}
+        width={270}
       >
         <div className="w-full h-full flex flex-row overflow-hidden relative">
           <HistoryList />
