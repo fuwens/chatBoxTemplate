@@ -1,15 +1,15 @@
 FROM node:20.18-alpine
-ENV PNPM_AUTO_INSTALL=true
+
 
 WORKDIR /app
 
 COPY . .
 
 RUN npm config set registry https://registry.npmmirror.com
-RUN npm install -g pnpm
-RUN pnpm install
 
-RUN pnpm run build
+RUN yarn install
+
+RUN npm run build
 
 # 使用 nginx 作为服务
 FROM nginx:alpine
