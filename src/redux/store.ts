@@ -7,10 +7,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import userReducer from "@/redux/reducer/UserSlice";
+import chatReducer from "@/redux/reducer/ChatSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer, // 用户详信息
+    chat: chatReducer, // 聊天信息
   },
 });
 

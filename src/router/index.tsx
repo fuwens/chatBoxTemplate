@@ -19,6 +19,20 @@ const index: RouteObject[] = [
       {
         path: "chat",
         element: LazyLoadMethod(() => import("@/pages/chat/index")),
+        children: [
+          {
+            path: "",
+            element: LazyLoadMethod(
+              () => import("@/pages/chat/compontents/ChatPanel")
+            ),
+          },
+          {
+            path: "c/:cid",
+            element: LazyLoadMethod(
+              () => import("@/pages/chat/compontents/ChatPanel")
+            ),
+          },
+        ],
       },
     ],
   },

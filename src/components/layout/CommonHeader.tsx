@@ -58,6 +58,7 @@ const CommonHeader: React.FC = () => {
       <Drawer
         placement={"left"}
         closable={false}
+        destroyOnClose={true}
         onClose={onClose}
         open={open}
         key={"placement"}
