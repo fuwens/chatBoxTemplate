@@ -1,4 +1,5 @@
 FROM node:20.18-alpine
+ENV PNPM_AUTO_INSTALL=true
 
 WORKDIR /app
 
