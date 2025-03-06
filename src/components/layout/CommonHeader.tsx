@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from "react";
-import { Drawer, Button } from "antd";
+import { Drawer } from "antd";
 import HistoryList from "@/pages/chat/compontents/HistoryList";
 import UserPanel from "@/pages/chat/compontents/UserPanel";
 import Logo from "@/assets/imgaes/logo.png";

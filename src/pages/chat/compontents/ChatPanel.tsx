@@ -18,7 +18,7 @@ import React, { useEffect } from "react";
 import markdownit from "markdown-it";
 import { useLocation, Outlet } from "react-router-dom";
 import { ConvertChatData, getUrlCidParameter } from "@/utils/JsTools";
-import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { setLoadHistoryFlag } from "@/redux/reducer/ChatSlice";
 
 const md = markdownit({ html: true, breaks: true });
@@ -75,7 +75,7 @@ const ChatPanel = () => {
       // .....
 
       for await (const chunk of XStream({
-        readableStream: response.body,
+        readableStream: response.body ?? new ReadableStream(),
       })) {
         console.log(chunk);
         const data = chunk.data && JSON.parse(chunk.data);
@@ -91,7 +91,7 @@ const ChatPanel = () => {
             // 拼接新的 URL
             var newUrl = currentUrl + pathToAdd;
             // 使用 history.pushState 更新 URL 而不刷新页面
-            history.pushState(null, null, newUrl);
+            history.pushState(null, "", newUrl);
             // 设置新对话标志
             dispatch(setLoadHistoryFlag());
           }
@@ -120,7 +120,8 @@ const ChatPanel = () => {
   // 处理聊天消息和历史记录
   useEffect(() => {
     console.log("messages-------", messages);
-    const newMessages = historyListMessages.concat(messages);
+
+    const newMessages = historyListMessages.concat(messages as any);
     setChatMessages(newMessages);
   }, [messages, historyListMessages]);
 
@@ -148,7 +149,7 @@ const ChatPanel = () => {
         .then((response) => response.json())
         .then((res) => {
           console.log(res);
-          setHistoryListMessages(ConvertChatData(res.data));
+          setHistoryListMessages(ConvertChatData(res.data) as any);
         });
     } else {
       // 新建一个对话

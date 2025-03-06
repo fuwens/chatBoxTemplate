@@ -16,7 +16,7 @@ export const ConvertHistoryData = (data: any) => {
       now.getDate() - now.getDay()
     ).getTime() / 1000;
 
-  const result = data.map((item: any, index: any) => {
+  const result = data.map((item: any) => {
     let group;
     if (item.created_at >= startOfToday) {
       group = "今天";
@@ -39,7 +39,7 @@ export const ConvertChatData = (data: any) => {
   const transformedMessages: { id: string; message: any; status: string }[] =
     [];
 
-  data.forEach((message: { query: any; answer: any }, index: any) => {
+  data.forEach((message: { query: any; answer: any }) => {
     // 第一条消息：用户输入
     transformedMessages.push({
       id: generateRandomString(12), // 生成唯一的ID

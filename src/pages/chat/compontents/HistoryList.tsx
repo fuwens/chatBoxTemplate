@@ -4,7 +4,7 @@
  * @Date: 2025-03-03 16:59:26
  * @Description: 聊天左侧历史记录。
  */
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Conversations, type ConversationsProps } from "@ant-design/x";
 import { type GetProp } from "antd";
 import { ConvertHistoryData } from "@/utils/JsTools";
@@ -20,9 +20,7 @@ const HistoryList: React.FC = () => {
   const [items, setItems] = useState<GetProp<ConversationsProps, "items">>([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const [defaultActiveKey, setDefaultActiveKey] = useState<string | undefined>(
-    undefined
-  );
+  const [defaultActiveKey] = useState<string | undefined>(undefined);
   const [activeKey, setActiveKey] = useState<string>("item1");
   const dispatch = useAppDispatch();
   const ChatStore = useAppSelector(selectChatStore);
@@ -31,7 +29,7 @@ const HistoryList: React.FC = () => {
       user: "abc-123",
       limit: 20,
     };
-    const searchParams = new URLSearchParams(params).toString();
+    const searchParams = new URLSearchParams(params as any).toString();
     // Fetch history list
     fetch(`/api/v1/conversations?${searchParams}`, {
       method: "GET",
@@ -48,8 +46,14 @@ const HistoryList: React.FC = () => {
   };
 
   useEffect(() => {
-    ChatStore.isLoadHistoryFlag && fetchHistoryList();
-    dispatch(clearLoadHistoryFlag());
+    if (ChatStore.isLoadHistoryFlag) {
+      fetchHistoryList();
+      const conversation_id = window.location.href.split("/chat/c/").pop();
+      if (conversation_id) {
+        setActiveKey(conversation_id);
+      }
+      dispatch(clearLoadHistoryFlag());
+    }
   }, [ChatStore.isLoadHistoryFlag]);
 
   useEffect(() => {

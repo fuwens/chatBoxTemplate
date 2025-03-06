@@ -4,7 +4,7 @@
  * @Date: 2025-03-02 13:49:54
  * @Description: chat box。
  */
-import React, { useRef } from "react";
+import React from "react";
 import { Button } from "antd";
 import HistoryList from "@/pages/chat/compontents/HistoryList";
 import UserPanel from "@/pages/chat/compontents/UserPanel";
