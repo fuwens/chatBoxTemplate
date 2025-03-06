@@ -36,9 +36,10 @@ export const ConvertHistoryData = (data: any) => {
 };
 
 export const ConvertChatData = (data: any) => {
-  const transformedMessages = [];
+  const transformedMessages: { id: string; message: any; status: string }[] =
+    [];
 
-  data.forEach((message, index) => {
+  data.forEach((message: { query: any; answer: any }, index: any) => {
     // 第一条消息：用户输入
     transformedMessages.push({
       id: generateRandomString(12), // 生成唯一的ID
@@ -57,12 +58,12 @@ export const ConvertChatData = (data: any) => {
   return transformedMessages;
 };
 
-export const generateRandomString = (num?: number = 12): string => {
+export const generateRandomString = (num?: number): string => {
   // 定义包含所有可能字符的字符集
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
-  const length = num;
+  const length = num ?? 12;
 
   // 循环 12 次，每次从字符集中随机选择一个字符
   for (let i = 0; i < length; i++) {

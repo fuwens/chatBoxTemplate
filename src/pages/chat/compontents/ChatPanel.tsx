@@ -78,6 +78,18 @@ const ChatPanel = () => {
         const data = chunk.data && JSON.parse(chunk.data);
         if (data?.event === "workflow_started") {
           setIsRequesting(true);
+          // 如果当前路径已经是对话路径，则不再添加
+          if (window.location.href.indexOf("/chat/c/") === -1) {
+            // 设置对话token在url中
+            const conversation_id = data?.conversation_id;
+            const currentUrl = window.location.href;
+            // 要添加的路径部分
+            var pathToAdd = `/c/${conversation_id}`;
+            // 拼接新的 URL
+            var newUrl = currentUrl + pathToAdd;
+            // 使用 history.pushState 更新 URL 而不刷新页面
+            history.pushState(null, null, newUrl);
+          }
         }
         if (data?.event === "message") {
           setIsRequesting(false);
@@ -137,6 +149,7 @@ const ChatPanel = () => {
       setContent("");
       setIsRequesting(false);
       setMessages([]);
+      setHistoryListMessages([]);
     }
   }, [location]);
 

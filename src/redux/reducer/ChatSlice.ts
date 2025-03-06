@@ -8,41 +8,29 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Define a type for the slice state
 interface ChatState {
-  currentConversation: {
-    key: string;
-    label: string;
-    group: string;
-  };
+  isNewChatFlag: boolean;
 }
 
 // Define the initial state using that type
 const initialState: ChatState = {
-  currentConversation: {
-    key: "",
-    label: "", // 对话名称
-    group: "", // 对话分组
-  },
+  isNewChatFlag: false,
 };
 
 export const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {
-    setChatInfo: (state, action) => {
-      state.key = action.payload.key;
-      state.label = action.payload.label;
-      state.group = action.payload.group;
+    setNewChatFlag: (state) => {
+      state.isNewChatFlag = true;
     },
-    clearChatInfo: (state) => {
-      state.key = "";
-      state.label = "";
-      state.group = "";
+    clearNewChatFlag: (state) => {
+      state.isNewChatFlag = false;
     },
   },
 });
 
-export const { setChatInfo } = chatSlice.actions;
-export const { clearChatInfo } = chatSlice.actions;
+export const { setNewChatFlag } = chatSlice.actions;
+export const { clearNewChatFlag } = chatSlice.actions;
 
 export const selectChatInfo = (state: { chat: ChatState }) => state.chat;
 

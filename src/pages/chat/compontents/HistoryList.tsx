@@ -7,14 +7,18 @@
 import React, { useEffect, useState } from "react";
 import { Conversations, type ConversationsProps } from "@ant-design/x";
 import { type GetProp } from "antd";
-import { ConvertHistoryData, updateUrlParams } from "@/utils/JsTools";
-import { useNavigate } from "react-router-dom";
+import { ConvertHistoryData } from "@/utils/JsTools";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const HistoryList: React.FC = () => {
   const [items, setItems] = useState<GetProp<ConversationsProps, "items">>([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [defaultActiveKey, setDefaultActiveKey] = useState<string | undefined>(
+    undefined
+  );
 
-  useEffect(() => {
+  const fetchHistoryList = () => {
     const params = {
       user: "abc-123",
       limit: 20,
@@ -30,15 +34,25 @@ const HistoryList: React.FC = () => {
     })
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
+        console.log(ConvertHistoryData(res.data));
         setItems(ConvertHistoryData(res.data));
       });
+  };
+
+  useEffect(() => {
+    fetchHistoryList();
   }, []);
 
   const goChat = (key: string) => {
     console.log(key);
     navigate("/chat/c/" + key);
   };
+  useEffect(() => {
+    const conversation_id = location.pathname.split("/c/").pop();
+    if (conversation_id && conversation_id !== "/chat") {
+      setDefaultActiveKey(conversation_id);
+    }
+  }, []);
 
   // Customize the style of the container
   const style = {
@@ -48,14 +62,18 @@ const HistoryList: React.FC = () => {
     paddingBottom: 160,
   };
   return (
-    // 超出出现滚动条
-    <Conversations
-      items={items}
-      defaultActiveKey="item1"
-      style={style}
-      onActiveChange={goChat}
-      groupable
-    />
+    <>
+      {/* 超出出现滚动条 */}
+      {items.length > 0 && (
+        <Conversations
+          items={items}
+          defaultActiveKey={defaultActiveKey}
+          style={style}
+          onActiveChange={goChat}
+          groupable
+        />
+      )}
+    </>
   );
 };
 export default HistoryList;
