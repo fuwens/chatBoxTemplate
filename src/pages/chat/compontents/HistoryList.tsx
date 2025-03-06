@@ -31,13 +31,17 @@ const HistoryList: React.FC = () => {
     };
     const searchParams = new URLSearchParams(params as any).toString();
     // Fetch history list
-    fetch(`${window.location.origin}:8080/v1/conversations?${searchParams}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
-      },
-    })
+    console.log(import.meta.env.VITE_API_BASE_URL);
+    fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/v1/conversations?${searchParams}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
+        },
+      }
+    )
       .then((response) => response.json())
       .then((res) => {
         console.log(ConvertHistoryData(res.data));

@@ -58,7 +58,7 @@ const ChatPanel = () => {
       const conversation_id = getUrlCidParameter(window.location.href);
       let answerContent = "";
       const response = await fetch(
-        `${window.location.origin}:8080}/v1/chat-messages`,
+        `${import.meta.env.VITE_API_BASE_URL}/v1/chat-messages`,
         {
           method: "POST",
           headers: {
@@ -142,13 +142,16 @@ const ChatPanel = () => {
       };
       const searchParams = new URLSearchParams(params).toString();
       // Fetch history list
-      fetch(`${window.location.origin}:8080}/v1/messages?${searchParams}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
-        },
-      })
+      fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/v1/messages?${searchParams}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
+          },
+        }
+      )
         .then((response) => response.json())
         .then((res) => {
           console.log(res);
