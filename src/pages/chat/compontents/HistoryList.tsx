@@ -4,11 +4,17 @@
  * @Date: 2025-03-03 16:59:26
  * @Description: 聊天左侧历史记录。
  */
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Conversations, type ConversationsProps } from "@ant-design/x";
 import { type GetProp } from "antd";
 import { ConvertHistoryData } from "@/utils/JsTools";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import {
+  selectChatStore,
+  clearNewChatFlag,
+  clearLoadHistoryFlag,
+} from "@/redux/reducer/ChatSlice";
 
 const HistoryList: React.FC = () => {
   const [items, setItems] = useState<GetProp<ConversationsProps, "items">>([]);
@@ -17,7 +23,9 @@ const HistoryList: React.FC = () => {
   const [defaultActiveKey, setDefaultActiveKey] = useState<string | undefined>(
     undefined
   );
-
+  const [activeKey, setActiveKey] = useState<string>("item1");
+  const dispatch = useAppDispatch();
+  const ChatStore = useAppSelector(selectChatStore);
   const fetchHistoryList = () => {
     const params = {
       user: "abc-123",
@@ -40,19 +48,42 @@ const HistoryList: React.FC = () => {
   };
 
   useEffect(() => {
+    ChatStore.isLoadHistoryFlag && fetchHistoryList();
+    dispatch(clearLoadHistoryFlag());
+  }, [ChatStore.isLoadHistoryFlag]);
+
+  useEffect(() => {
     fetchHistoryList();
   }, []);
 
   const goChat = (key: string) => {
     console.log(key);
     navigate("/chat/c/" + key);
+    setActiveKey(key);
   };
+
+  useEffect(() => {
+    if (ChatStore.isNewChatFlag) {
+      setActiveKey("");
+      dispatch(clearNewChatFlag());
+    }
+  }, [ChatStore.isNewChatFlag]);
+
   useEffect(() => {
     const conversation_id = location.pathname.split("/c/").pop();
     if (conversation_id && conversation_id !== "/chat") {
-      setDefaultActiveKey(conversation_id);
+      setActiveKey(conversation_id);
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (ChatStore.isNewChatFlag) {
+  //     const conversation_id = location.pathname.split("/c/").pop();
+  //     if (conversation_id && conversation_id !== "/chat") {
+  //       setDefaultActiveKey(conversation_id);
+  //     }
+  //   }
+  // }, [ChatStore.isNewChatFlag]);
 
   // Customize the style of the container
   const style = {
@@ -67,6 +98,8 @@ const HistoryList: React.FC = () => {
       {items.length > 0 && (
         <Conversations
           items={items}
+          // activeKey={defaultActiveKey}
+          activeKey={activeKey}
           defaultActiveKey={defaultActiveKey}
           style={style}
           onActiveChange={goChat}

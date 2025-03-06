@@ -4,16 +4,20 @@
  * @Date: 2025-03-02 13:49:54
  * @Description: chat box。
  */
-import React from "react";
+import React, { useRef } from "react";
 import { Button } from "antd";
 import HistoryList from "@/pages/chat/compontents/HistoryList";
 import UserPanel from "@/pages/chat/compontents/UserPanel";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/redux/hooks";
+import { setNewChatFlag } from "@/redux/reducer/ChatSlice";
 
 const ChatBox: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const goNewChat = () => {
     navigate("/chat");
+    dispatch(setNewChatFlag());
   };
   return (
     <div className="w-full h-full flex flex-row overflow-hidden">

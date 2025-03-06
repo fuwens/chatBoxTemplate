@@ -18,6 +18,8 @@ import React, { useEffect } from "react";
 import markdownit from "markdown-it";
 import { useLocation, Outlet } from "react-router-dom";
 import { ConvertChatData, getUrlCidParameter } from "@/utils/JsTools";
+import { useAppSelector, useAppDispatch } from "@/redux/hooks";
+import { setLoadHistoryFlag } from "@/redux/reducer/ChatSlice";
 
 const md = markdownit({ html: true, breaks: true });
 const renderMarkdown: BubbleProps["messageRender"] = (content) => (
@@ -48,6 +50,7 @@ const ChatPanel = () => {
   const [historyListMessages, setHistoryListMessages] = React.useState([]);
   const [isRequesting, setIsRequesting] = React.useState(false);
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   // Agent for request
   const [agent] = useXAgent({
@@ -89,6 +92,8 @@ const ChatPanel = () => {
             var newUrl = currentUrl + pathToAdd;
             // 使用 history.pushState 更新 URL 而不刷新页面
             history.pushState(null, null, newUrl);
+            // 设置新对话标志
+            dispatch(setLoadHistoryFlag());
           }
         }
         if (data?.event === "message") {
@@ -99,6 +104,8 @@ const ChatPanel = () => {
         }
         if (data?.event === "workflow_finished") {
           onSuccess(answerContent);
+          // 设置新对话标志
+          dispatch(setLoadHistoryFlag());
         }
       }
     },

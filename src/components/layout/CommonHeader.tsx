@@ -6,22 +6,32 @@
  */
 
 import React, { useState } from "react";
-import { Drawer } from "antd";
+import { Drawer, Button } from "antd";
 import HistoryList from "@/pages/chat/compontents/HistoryList";
 import UserPanel from "@/pages/chat/compontents/UserPanel";
 import Logo from "@/assets/imgaes/logo.png";
 import MenuSvg from "@/assets/svg/menu.svg";
 import MenuMore from "@/assets/svg/menu-more.svg";
 import MenuNew from "@/assets/svg/menu-new.svg";
+import { useNavigate } from "react-router-dom";
+
+import { useAppDispatch } from "@/redux/hooks";
+import { setNewChatFlag } from "@/redux/reducer/ChatSlice";
 
 const CommonHeader: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const showDrawer = () => {
     setOpen(true);
   };
 
   const onClose = () => {
     setOpen(false);
+  };
+  const goNewChat = () => {
+    navigate("/chat");
+    dispatch(setNewChatFlag());
   };
 
   return (
@@ -50,7 +60,7 @@ const CommonHeader: React.FC = () => {
           </div>
           <div>新对话</div>
           <div className="flex items-center gap-2">
-            <img src={MenuNew} alt="menu-new" />
+            <img onClick={() => goNewChat()} src={MenuNew} alt="menu-new" />
             <img src={MenuMore} alt="menu-more" />
           </div>
         </div>
