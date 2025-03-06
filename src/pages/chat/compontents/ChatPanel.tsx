@@ -57,21 +57,24 @@ const ChatPanel = () => {
     request: async ({ message }, { onSuccess, onUpdate }) => {
       const conversation_id = getUrlCidParameter(window.location.href);
       let answerContent = "";
-      const response = await fetch("/api/v1/chat-messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
-        },
-        body: JSON.stringify({
-          inputs: {},
-          query: message,
-          response_mode: "streaming",
-          conversation_id: conversation_id,
-          user: "abc-123",
-          files: [],
-        }),
-      });
+      const response = await fetch(
+        `${window.location.origin}:8080}/v1/chat-messages`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer app-FLjfPKU29VkzwR5FDmiBE4yC",
+          },
+          body: JSON.stringify({
+            inputs: {},
+            query: message,
+            response_mode: "streaming",
+            conversation_id: conversation_id,
+            user: "abc-123",
+            files: [],
+          }),
+        }
+      );
       // .....
 
       for await (const chunk of XStream({
@@ -139,7 +142,7 @@ const ChatPanel = () => {
       };
       const searchParams = new URLSearchParams(params).toString();
       // Fetch history list
-      fetch(`/api/v1/messages?${searchParams}`, {
+      fetch(`${window.location.origin}:8080}/v1/messages?${searchParams}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

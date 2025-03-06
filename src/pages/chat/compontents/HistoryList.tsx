@@ -31,7 +31,7 @@ const HistoryList: React.FC = () => {
     };
     const searchParams = new URLSearchParams(params as any).toString();
     // Fetch history list
-    fetch(`/api/v1/conversations?${searchParams}`, {
+    fetch(`${window.location.origin}:8080/v1/conversations?${searchParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
