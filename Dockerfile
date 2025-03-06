@@ -1,4 +1,4 @@
-FROM node:20 as build-stage
+FROM node:20.18-alpine
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ RUN pnpm install
 RUN pnpm run build
 
 # 使用 nginx 作为服务
-FROM nginx:alpine as production-stage
+FROM nginx:alpine
 
 # 复制构建后的静态文件到 nginx 的默认公开目录
 COPY --from=0 /app/dist /usr/share/nginx/html
